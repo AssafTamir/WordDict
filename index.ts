@@ -10,11 +10,15 @@ class Dict {
         this.isWord=false
     }
     add (s: string){
+        this.addInternal(s.toUpperCase())
+    }
+
+    addInternal (s: string){
         if (s.length > 0) {
             const index = s.charCodeAt(0) - "A".charCodeAt(0)
             if (this.charArray[index] == null)
                 this.charArray[index] = new Dict()
-            this.charArray[index].add(s.slice(1))
+            this.charArray[index].addInternal(s.slice(1))
         }
         else
           this.isWord = true
