@@ -1,16 +1,25 @@
+import * as buffer from "buffer";
+
+const fs = require('fs');
 class Dict {
 
     charArray: Dict[]
     isWord: boolean
     constructor() {
         this.charArray = []
-        // for (let i = 0; i < 26; i++) {
-        //     this.charArray[i]= null
-        // }
         this.isWord=false
     }
+    loadFile(file: string){
+        const data = fs.readFileSync(file,{encoding:'utf8', flag:'r'});
+
+        const arr = data.toString().replace(/\r\n/g,'\n').split('\n');
+        for(let i of arr) {
+            this.add(i)
+        }
+    }
+
     add (s: string){
-        this.addInternal(s.toUpperCase())
+        this.addInternal(s.toUpperCase().trim())
     }
 
     addInternal (s: string){
@@ -46,6 +55,7 @@ class Dict {
     }
 }
 let dict = new Dict()
+dict.loadFile('words.txt')
 dict.add("Assaf".toUpperCase())
 dict.add("Assaf".toUpperCase())
 dict.add("Tamir".toUpperCase())

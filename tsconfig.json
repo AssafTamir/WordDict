@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    // ... other settings
+    "noImplicitThis": false
+  }
+}
