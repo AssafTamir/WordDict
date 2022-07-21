@@ -1,4 +1,14 @@
-import * as buffer from "buffer";
+function timer() {
+    return function(target, propertyKey, descriptor)  {
+        let oldFunc = descriptor.value;
+        descriptor.value = function (){
+            const start = Date.now();
+            let result = oldFunc.apply(this, arguments);
+            console.log(propertyKey+" took "+( Date.now() - start) +"ms");
+            return result;
+        }
+    }
+}
 
 const fs = require('fs');
 class Dict {
@@ -9,6 +19,8 @@ class Dict {
         this.charArray = []
         this.isWord=false
     }
+    // @ts-ignore
+    @timer()
     loadFile(file: string){
         const data = fs.readFileSync(file,{encoding:'utf8', flag:'r'});
 
@@ -32,6 +44,8 @@ class Dict {
         else
           this.isWord = true
     }
+    // @ts-ignore
+    @timer()
     contains(s: string): boolean {
         if (s.length > 0)
             return this.isWord
@@ -40,12 +54,13 @@ class Dict {
             return false
         return this.charArray[index].contains(s.slice(1))
     }
-    toString = () : string => {
+    toString() : string {
         let all :string[] = []
         this.allWords(all,"")
         return all.toString()
     }
-    allWords = (all: string[], s: string): void => {
+
+    allWords(all: string[], s: string): void {
         if (this.isWord)
             all.push(s)
 
@@ -54,9 +69,11 @@ class Dict {
                 this.charArray[i].allWords(all, s+ String.fromCharCode(i+ "A".charCodeAt(0)))
     }
 }
+
 let dict = new Dict()
 dict.loadFile('words.txt')
 dict.add("Assaf".toUpperCase())
 dict.add("Assaf".toUpperCase())
 dict.add("Tamir".toUpperCase())
-console.log(dict.toString())
+console.log(dict.contains("Tamir".toUpperCase()))
+//console.log(dict.toString())
