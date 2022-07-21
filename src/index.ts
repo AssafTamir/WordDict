@@ -1,10 +1,10 @@
 function timer() {
-    return function(target, propertyKey, descriptor)  {
+    return function(target:any, propertyKey:any , descriptor:any)  {
         let oldFunc = descriptor.value;
         descriptor.value = function (){
             const start = Date.now();
             let result = oldFunc.apply(this, arguments);
-            console.log(propertyKey+" took "+( Date.now() - start) +"ms");
+            console.log("====>"+propertyKey+" took "+( Date.now() - start) +"ms");
             return result;
         }
     }
@@ -23,7 +23,6 @@ class Dict {
     @timer()
     loadFile(file: string){
         const data = fs.readFileSync(file,{encoding:'utf8', flag:'r'});
-
         const arr = data.toString().replace(/\r\n/g,'\n').split('\n');
         for(let i of arr) {
             this.add(i)
@@ -34,7 +33,7 @@ class Dict {
         this.addInternal(s.toUpperCase().trim())
     }
 
-    addInternal (s: string){
+    private addInternal (s: string){
         if (s.length > 0) {
             const index = s.charCodeAt(0) - "A".charCodeAt(0)
             if (this.charArray[index] == null)
@@ -49,11 +48,12 @@ class Dict {
     contains(s: string): boolean {
         if (s.length > 0)
             return this.isWord
-        const index = s.charCodeAt(0) - "A".charCodeAt(0)
+        const index = s.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)
         if (this.charArray[index] == null)
             return false
         return this.charArray[index].contains(s.slice(1))
     }
+
     toString() : string {
         let all :string[] = []
         this.allWords(all,"")
@@ -70,10 +70,10 @@ class Dict {
     }
 }
 
-let dict = new Dict()
-dict.loadFile('words.txt')
-dict.add("Assaf".toUpperCase())
-dict.add("Assaf".toUpperCase())
-dict.add("Tamir".toUpperCase())
-console.log(dict.contains("Tamir".toUpperCase()))
+//let dict = new Dict()
+//dict.loadFile('words.txt')
+//dict.add("Assaf")
+//dict.add("Assaf")
+//dict.add("Tamir")
+//console.log(dict.contains("Tamir"))
 //console.log(dict.toString())
