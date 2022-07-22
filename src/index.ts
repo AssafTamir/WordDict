@@ -30,12 +30,12 @@ class Dict {
     }
 
     add (s: string){
-        this.addInternal(s.toUpperCase().trim())
+        this.addInternal(s.trim())
     }
 
     private addInternal (s: string){
         if (s.length > 0) {
-            const index = s.charCodeAt(0) - "A".charCodeAt(0)
+            const index = s.charCodeAt(0)
             if (this.charArray[index] == null)
                 this.charArray[index] = new Dict()
             this.charArray[index].addInternal(s.slice(1))
@@ -48,7 +48,7 @@ class Dict {
     contains(s: string): boolean {
         if (s.length > 0)
             return this.isWord
-        const index = s.toUpperCase().charCodeAt(0) - "A".charCodeAt(0)
+        const index = s.charCodeAt(0)
         if (this.charArray[index] == null)
             return false
         return this.charArray[index].contains(s.slice(1))
@@ -66,14 +66,14 @@ class Dict {
 
         for (let i = 0; i < this.charArray.length; i++)
             if (this.charArray[i] != null)
-                this.charArray[i].allWords(all, s+ String.fromCharCode(i+ "A".charCodeAt(0)))
+                this.charArray[i].allWords(all, s+ String.fromCharCode(i))
     }
     startWith(all: string[], s: string): void {
         let curr : Dict = this
         for (let i = 0; i < s.length; i++) {
             if(curr == null)
                 return;
-            const index = s.toUpperCase().charCodeAt(i) - "A".charCodeAt(0)
+            const index = s.charCodeAt(i)
             curr=curr.charArray[index]
         }
         curr.allWords(all, s)
@@ -86,6 +86,6 @@ dict.add("Assaf")
 dict.add("Tamir")
 console.log(dict.contains("Tamir"))
 let all :string[] = []
-dict.startWith(all,"Tami")
+dict.startWith(all,"Assa")
 console.log(all.toString())
 //console.log(dict.toString())
