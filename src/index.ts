@@ -69,11 +69,10 @@ class Dict {
                 this.charArray[i].allWords(all, s+ String.fromCharCode(i+ "A".charCodeAt(0)))
     }
 }
-
-//let dict = new Dict()
-//dict.loadFile('words.txt')
-//dict.add("Assaf")
-//dict.add("Assaf")
-//dict.add("Tamir")
-//console.log(dict.contains("Tamir"))
+let dict = new Dict()
+dict.loadFile('words.txt')
+dict.add("Assaf")
+dict.add("Assaf")
+dict.add("Tamir")
+console.log(dict.contains("Tamir"))
 //console.log(dict.toString())
