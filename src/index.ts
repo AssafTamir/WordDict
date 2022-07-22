@@ -68,6 +68,16 @@ class Dict {
             if (this.charArray[i] != null)
                 this.charArray[i].allWords(all, s+ String.fromCharCode(i+ "A".charCodeAt(0)))
     }
+    startWith(all: string[], s: string): void {
+        let curr : Dict = this
+        for (let i = 0; i < s.length; i++) {
+            if(curr == null)
+                return;
+            const index = s.toUpperCase().charCodeAt(i) - "A".charCodeAt(0)
+            curr=curr.charArray[index]
+        }
+        curr.allWords(all, s)
+    }
 }
 let dict = new Dict()
 dict.loadFile('words.txt')
@@ -75,4 +85,7 @@ dict.add("Assaf")
 dict.add("Assaf")
 dict.add("Tamir")
 console.log(dict.contains("Tamir"))
+let all :string[] = []
+dict.startWith(all,"Tami")
+console.log(all.toString())
 //console.log(dict.toString())
