@@ -1,3 +1,7 @@
+const input = require('prompt-sync')()
+
+
+
 function timer() {
     return function(target:any, propertyKey:any , descriptor:any)  {
         let oldFunc = descriptor.value;
@@ -68,6 +72,9 @@ class Dict {
             if (this.charArray[i] != null)
                 this.charArray[i].allWords(all, s+ String.fromCharCode(i))
     }
+
+    // @ts-ignore
+    @timer()
     startWith(all: string[], s: string): void {
         let curr : Dict = this
         for (let i = 0; i < s.length; i++) {
@@ -82,10 +89,12 @@ class Dict {
 let dict = new Dict()
 dict.loadFile('words.txt')
 dict.add("Assaf")
-dict.add("Assaf")
-dict.add("Tamir")
-console.log(dict.contains("Tamir"))
-let all :string[] = []
-dict.startWith(all,"Assa")
-console.log(all.toString())
-//console.log(dict.toString())
+
+while (true){
+    let all :string[] = [];
+    let  word = input("\n#> ");
+    if (word == "Quit") break;
+    dict.startWith(all, word);
+    console.log(all.toString())
+    console.log("\nCount: " + all.length)
+}
