@@ -29,4 +29,3 @@
     }
   }
 }
-curl https://mockend.com/org/repo/users X POST -H "Content-Type: application/json" \ --data '{"name": "alice"}'
