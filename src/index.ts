@@ -75,7 +75,7 @@ class Dict {
 
     // @ts-ignore
     @timer()
-    startWith(all: string[], s: string): void {
+    startWith(s: string): string[] {
         let curr : Dict = this
         for (let i = 0; i < s.length; i++) {
             if(curr == null)
@@ -83,7 +83,9 @@ class Dict {
             const index = s.charCodeAt(i)
             curr=curr.charArray[index]
         }
+        let all: string[] = [];
         curr.allWords(all, s)
+        return all;
     }
 }
 
@@ -105,9 +107,8 @@ interface WordTable{
 }
 app.use(express.json()) ;
 app.get('/:id', (req: Request, res: Response) => {
-    const all :string[] = [];
     let id = req.params.id;
-    dict.startWith(all, id);
+    const all :string[] = dict.startWith(id);
     let ret: WordTable = {
         id: id,
         list: all
