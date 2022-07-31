@@ -1,13 +1,13 @@
-const input = require('prompt-sync')()
+//const input = require('prompt-sync')()
 
 
 
 function timer() {
     return function(target:any, propertyKey:any , descriptor:any)  {
-        let oldFunc = descriptor.value;
+        const oldFunc = descriptor.value;
         descriptor.value = function (){
             const start = Date.now();
-            let result = oldFunc.apply(this, arguments);
+            const result = oldFunc.apply(this, arguments);
             console.log("====>"+propertyKey+" took "+( Date.now() - start) +"ms");
             return result;
         }
@@ -28,7 +28,7 @@ class Dict {
     loadFile(file: string){
         const data = fs.readFileSync(file,{encoding:'utf8', flag:'r'});
         const arr = data.toString().replace(/\r\n/g,'\n').split('\n');
-        for(let i of arr) {
+        for(const i of arr) {
             this.add(i)
         }
     }
@@ -59,7 +59,7 @@ class Dict {
     }
 
     toString() : string {
-        let all :string[] = []
+        const all :string[] = []
         this.allWords(all,"")
         return all.toString()
     }
@@ -86,15 +86,48 @@ class Dict {
         curr.allWords(all, s)
     }
 }
+
 let dict = new Dict()
 dict.loadFile('words.txt')
 dict.add("Assaf")
+console.log('start')
+import express, { Express, Request, Response } from 'express';
+import dotenv from 'dotenv';
 
-while (true){
-    let all :string[] = [];
-    let  word = input("\n#> ");
-    if (word == "Quit") break;
-    dict.startWith(all, word);
-    console.log(all.toString())
-    console.log("\nCount: " + all.length)
+
+dotenv.config();
+
+const app: Express = express();
+const port = 22222;
+interface WordTable{
+    id:string,
+    list:string[]
 }
+app.use(express.json()) ;
+app.get('/:id', (req: Request, res: Response) => {
+    const all :string[] = [];
+    let id = req.params.id;
+    dict.startWith(all, id);
+    let ret: WordTable = {
+        id: id,
+        list: all
+    }
+    res.send(ret);
+});
+
+app.listen(port, () => {
+    console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+});
+
+
+//
+// while (true){
+//     const all :string[] = [];
+//     const  word = input("\n#> ");
+//     if (word == "Quit") break;
+//     dict.startWith(all, word);
+//     console.log(all.toString())
+//     console.log("\nCount: " + all.length)
+// }
+
+
